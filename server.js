@@ -1,12 +1,15 @@
 import { createServer } from "http";
-import { extname } from "path";
+import { extname, join, dirname } from "path";
 import { readFile } from "fs";
+import { fileURLToPath } from "url";
 
 const PORT = 4000;
 const HOST = "localhost";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const server = createServer((req, res) => {
-  readFile(`./public/${getFileFromURL(req.url)}`, (error, file) => {
+  readFile(join(__dirname, "public", getFileFromURL(req.url)), (error, file) => {
     if (error) {
       res.writeHead(301, {
         Location: "/404.html",
